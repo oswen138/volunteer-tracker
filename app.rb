@@ -70,3 +70,5 @@ get('/trains/:id/edit') do
 end
 
 routing not workign??
+
+nothing is oring.
