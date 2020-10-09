@@ -68,3 +68,5 @@ get('/trains/:id/edit') do
   @train = Train.find(params[:id].to_i())
   erb(:edit_train)
 end
+
+routing not workign??
