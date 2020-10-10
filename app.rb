@@ -8,64 +8,56 @@ also_reload "lib/**/*.rb"
 
 DB = PG.connect({:dbname => 'volunteer_tracker_test'})
 
-get('/') do
-  redirect to('/home')
-end
-
-get('/home') do
+#Main Page
+get("/") do
+  @projects = Project.all()
   erb(:home)
 end
 
-get('/trains') do
-  @trains = Train.all
-  erb(:trains)
+#Add a new project
+post("/") do
+  name = params.fetch("name")
+  new_project = Project.new({:name => name, :id => nil})
+  new_project.save
+  redirect "/"
 end
 
-get('/cities') do
-  @cities = City.all
-  erb(:cities)
+#list of projects with volunteers
+get("/projects/:id") do
+  @project_id = params[:id]
+  @project = Project.find(params[:id])
+  @volunteers = @project.volunteers()
+  erb(:volunteer)
 end
 
-get('/timetable') do
-  @timetable = Timetable.new
-  # @timetable.get_stops
-  erb(:timetable)
+#Update and delete project
+get('/projects/:id/edit') do
+  @project = Project.find(params.fetch('id').to_i())
+  erb(:edit_project)
 end
 
-get('/trains/new') do
-  erb(:new_train)
+post "/projects/:id/volunteers" do
+  project_id = params[:id]
+  @project = Project.find(params[:id])
+  name = params["name"]
+  volunteer = Volunteer.new(:project_id => @project.id, :name => name)
+  volunteer.save
+  redirect 
 end
 
-get('/cities/new') do
-  erb(:new_city)
+#Delete a project
+delete('/projects/:id') do
+  @project = Project.find(params.fetch('id').to_i())
+  @project.delete()
+  @projects = Project.all()
+  erb(:projects)
 end
 
-post('/trains') do
-  name = params[:train_name]
-  train = Train.new({name: name, id: nil})
-  train.save
-  redirect to('/trains')
-end
 
-post('/cities') do
-  name = params[:city_name]
-  city = City.new({name: name, id: nil})
-  city.save
-  redirect to('/cities')
+#edit volunteer
+patch("/volunteer/:id/edit") do
+  name = params["name"]
+  @volunteer = Volunteer.find(params["id"].to_i)
+  @volunteer.update({:name => name})
+  redirect "/volunteer/#{@volunteer.id}"
 end
-
-get('/trains/:id') do
-  @train = Train.find(params[:id].to_i())
-  erb(:train)
-end
-
-get('/cities/:id') do
-  @city = City.find(params[:id].to_i())
-  erb(:city)
-end
-
-get('/trains/:id/edit') do
-  @train = Train.find(params[:id].to_i())
-  erb(:edit_train)
-end
-
