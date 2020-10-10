@@ -17,11 +17,9 @@ A website created with Ruby and HTML where a user can view, add, update, and del
 4. Run tests in the command line with rspec
 5. You can create a copy of the database by running psql in the terminal : psql volunteer_tracker < database_backup.sql
 ```
-CREATE DATABASE volunteer_tracker;
-\c volunteer_tracker
-CREATE TABLE volunteers (id serial primary key, name varchar, project_id int);
-CREATE TABLE projects (id serial primary key, name varchar);
-CREATE DATABASE volunteer_tracker_test WITH TEMPLATE volunteer_tracker;
+createdb [DATABASE NAME]
+psql [DATABASE_NAME] < database_backup.sql
+createdb -T [DATABASE NAME] [TEST DATABASE NAME]
 ```
 6. Run application in the browser of choice by typing ruby app.rb in the terminal
 7. Enter in "localhost:4567" in your browser of choice
