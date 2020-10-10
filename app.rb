@@ -69,6 +69,3 @@ get('/trains/:id/edit') do
   erb(:edit_train)
 end
 
-routing not workign??
-
-nothing is oring.
