@@ -1,6 +1,6 @@
-# Scrabble Score Checker
+# Volunteer Tracker Application
 
-#### An application that allows users to track projects and volunteers working on them. 6/1/17
+#### An application that allows users to track projects and volunteers working on them. 10/09/2020
 
 #### By **Ophelia Swen**
 
@@ -12,7 +12,7 @@ A website created with Ruby and HTML where a user can view, add, update, and del
 ## Setup/Installation Requirements
 
 1. Open terminal and navigate to "cd Desktop"
-2. Clone repository with git clone ""
+2. Clone repository with git clone "https://github.com/oswen138/volunteer-tracker.git master"
 3. Run gem install bundler and run bundle install in command line to download all dependencies
 4. Run tests in the command line with rspec
 5. You can create a copy of the database by running psql in the terminal : psql volunteer_tracker < database_backup.sql
@@ -42,4 +42,4 @@ _Email no one with any questions, comments, or concerns._
 
 *{This software is licensed under the MIT license}*
 
-Copyright (c) 2017 **_Ophelia Swen_**
+Copyright (c) 2020 **_Ophelia Swen_**
