@@ -1,11 +1,11 @@
 class Volunteer
-  attr_reader :id
   attr_accessor :name, :project_id
+  attr_reader :id
 
   def initialize(attributes)
-    @name = attributes.fetch(:name)
-    @project_id = attributes.fetch(:project_id)
-    @id = attributes.fetch(:id)
+    @name = attributes[:name]
+    @project_id = attributes[:project_id]
+    @id = attributes[:id]
   end
 
   def ==(another_volunteer)
@@ -17,29 +17,34 @@ class Volunteer
     volunteers = []
     returned_volunteers.each() do |volunteer|
       name = volunteer.fetch("name")
-      id = volunteer.fetch("id").to_i
       project_id = volunteer.fetch("project_id").to_i
+      id = volunteer.fetch("id").to_i
       volunteers.push(Volunteer.new(:name => name, :project_id => project_id, :id => id))
     end
     volunteers
   end
 
   def save
-    save_volunteer = DB.exec("INSERT INTO volunteers (name, project_id) VALUES ('#{@name}', '#{@project_id}') RETURNING id;")
-    @id = save_volunteer.first().fetch("id").to_i
+    saved_volunteer = DB.exec("INSERT INTO volunteers (name, project_id) VALUES ('#{@name}', '#{@project_id}') RETURNING id;")
+    @id = saved_volunteer.first().fetch("id").to_i
   end
 
   def self.find(id)
-    find_volunteers = DB.exec("SELECT * FROM volunteers WHERE id = #{id};").first
-    name = find_volunteers.fetch("name")
-    project_id = find_volunteers().fetch("project_id").to_i
+    found_volunteers = DB.exec("SELECT * FROM volunteers WHERE id = #{id};")
+    name = found_volunteers.first.fetch("name")
+    project_id = found_volunteers.first().fetch("project_id").to_i
     Volunteer.new({:name => name, :project_id => project_id, :id => id})
   end
 
-  def update(name)
-    @name = name
-    DB.exec("UPDATE albums SET name = '#{@name}' WHERE id = #{@id};")
+  def update(attributes)
+    @name = attributes.fetch(:name, @name)
+    DB.exec("UPDATE volunteers SET name = '#{@name}' WHERE id = #{self.id()};")
   end
+
+  def delete
+    DB.exec("DELETE FROM volunteers WHERE id = #{self.id()};")
+  end
+
 end
 
 

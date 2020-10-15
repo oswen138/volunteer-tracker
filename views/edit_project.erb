@@ -1,20 +1,14 @@
-<div class="container">
-  <h5>Name: <%= @project.name() %></h5>
+<h1>Update project title <%= @project.title() %></h1>
 
-  <form action="/projects/<%= @project.id() %>" method="post">
-    <input name="_method" type="hidden" value="patch">
-    <div class="form-group">
-      <label for="name"><be: </b></label>
-      <input id="name" name="name" type="text"  class="form-control">
-    </div>
-    <button type="submit" class="btn btn-primary">Update</button>
-  </form>
-<br>
-  <form action="/projects/<%= @project.id() %>" method="post">
-    <input name="_method" type="hidden" value="delete">
-    <button type="submit" class="btn btn-warning">Delete</button>
-    </div>
-  </form>
-<a href="/">Back to Main Page</a>
+<form action="/projects/<%= @project.id() %>" method="post">
+  <input type="hidden" name="_method" value="patch">
+  <label for="title">Rename your Project:</label>
+  <input id="title" type="text" name="title">
+  <button type="submit" name="button" class="btn">Update Project</button>
+</form>
 
-</div>
+<form action="/projects/<%= @project.id() %>" method="post">
+  <input type="hidden" name="_method" value="delete">
+  <button type="submit" name="button" class="btn">Delete Project</button>
+</form>
+

@@ -10,57 +10,75 @@ also_reload "lib/**/*.rb"
 
 DB = PG.connect({:dbname => "volunteer_tracker", :password => ENV['PG_PASS']})
 
-
-#Main Page
-get("/") do
+get('/') do
   @projects = Project.all()
-  erb(:home)
+  erb(:index)
 end
 
-#Add a new project
-post("/") do
-  name = params.fetch("name")
-  new_project = Project.new({:name => name, :id => nil})
-  new_project.save
-  redirect "/"
+get('/projects/new') do
+  erb(:project_list)
 end
 
-#list of projects with volunteers
-get("/projects/:id") do
-  @project_id = params[:id]
-  @project = Project.find(params[:id])
-  @volunteers = @project.volunteers()
-  erb(:volunteer)
+post('/') do
+  title = params.fetch("title")
+  project = Project.new({:title => title, :id => nil })
+  project.save()
+  @projects = Project.all()
+  erb(:index)
 end
 
-#Update and delete project
-get('/projects/:id/edit') do
-  @project = Project.find(params.fetch('id').to_i())
-  erb(:edit_project)
-end
-
-post "/projects/:id/volunteers" do
-  project_id = params[:id]
-  @project = Project.find(params[:id])
-  name = params["name"]
-  volunteer = Volunteer.new(:project_id => @project.id, :name => name)
-  volunteer.save
-  redirect to ?? (:volunteer)
-end
-
-#Delete a project
-delete('/projects/:id') do
-  @project = Project.find(params.fetch('id').to_i())
-  @project.delete()
+get('/projects') do
   @projects = Project.all()
   erb(:projects)
 end
 
+get('/projects/:id') do
+  @project = Project.find(params.fetch("id").to_i())
+  erb(:project)
+end
 
-#edit volunteer
-patch("/volunteer/:id/edit") do
-  name = params["name"]
-  @volunteer = Volunteer.find(params["id"].to_i)
+post('/projects/:id') do
+  @project = Project.find(params.fetch("id").to_i())
+  name = params.fetch("name")
+  project_id = params.fetch("id").to_i()
+  @volunteer = Volunteer.new({:name => name, :project_id => project_id, :id => nil})
+  @volunteers = @project.volunteers()
+  @volunteer.save()
+  erb(:project)
+end
+
+get('/volunteers/:id') do
+  @volunteer = Volunteer.find(params.fetch(:id).to_i)
+  erb(:volunteer)
+end
+
+get('/projects/:id/edit') do
+  @project = Project.find(params.fetch("id").to_i())
+  erb(:project_edit)
+end
+
+get('/volunteers/:id/edit') do
+  @volunteer = Volunteer.find(params.fetch("id").to_i())
+  erb(:volunteer)
+end
+
+patch('/projects/:id') do
+  title = params.fetch('title')
+  @project = Project.find(params.fetch("id").to_i())
+  @project.update({:title => title})
+  erb(:project)
+end
+
+patch('/volunteers/:id') do
+  name = params.fetch('name')
+  @volunteer = Volunteer.find(params.fetch("id").to_i())
   @volunteer.update({:name => name})
-  redirect "/volunteer/#{@volunteer.id}"
+  erb(:volunteer)
+end
+
+delete('/projects/:id') do
+  @project = Project.find(params.fetch("id").to_i())
+  @project.delete()
+  @projects = Project.all()
+  erb(:index)
 end
