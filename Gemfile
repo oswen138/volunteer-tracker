@@ -1,8 +1,9 @@
 source('https://rubygems.org')
 
+gem('dotenv')
 gem('sinatra')
-gem('rspec')
-gem('pry')
 gem('sinatra-contrib')
+gem('rspec')
 gem('capybara')
+gem('pry')
 gem('pg')

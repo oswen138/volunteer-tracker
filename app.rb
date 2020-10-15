@@ -4,9 +4,12 @@ require "./lib/project"
 require "./lib/volunteer"
 require "pry"
 require "pg"
+require('dotenv/load')
+
 also_reload "lib/**/*.rb"
 
-DB = PG.connect({:dbname => 'volunteer_tracker_test'})
+DB = PG.connect({:dbname => "volunteer_tracker", :password => ENV['PG_PASS']})
+
 
 #Main Page
 get("/") do
@@ -42,7 +45,7 @@ post "/projects/:id/volunteers" do
   name = params["name"]
   volunteer = Volunteer.new(:project_id => @project.id, :name => name)
   volunteer.save
-  redirect 
+  redirect to ?? (:volunteer)
 end
 
 #Delete a project
