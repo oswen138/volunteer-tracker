@@ -7,3 +7,4 @@ gem('rspec')
 gem('capybara')
 gem('pry')
 gem('pg')
+gem "pg_tester"
